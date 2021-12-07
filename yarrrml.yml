@@ -1,0 +1,146 @@
+---
+prefixes:
+  spo: "http://w3id.org/steel/ProcessOntology/"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  dc: "http://purl.org/dc/elements/1.1/"
+  skos: "http://www.w3.org/2004/02/skos/core#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  grel: "http://users.ugent.be/~bjdmeest/function/grel.ttl#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  emmo: "http://emmo.info/emmo#"
+  pmdco: "https://material-digital.de/pmdco/"
+base: "http://w3id.org/steel/ProcessOntology/"
+
+mappings:
+
+  ###
+  # generating ontology metadata
+  ###
+  ontologyMetadata:
+    sources: 
+      - ['csv/OntologyMetadata.csv~csv']
+    subject: "spo:"
+    po:
+      - ["a", "owl:Ontology"]
+      - [ ["rdfs:label", "skos:prefLabel"], "$(title-EN)", "en~lang"]
+      - ["dc:description", "$(description-EN)", "en~lang"]
+      - ["owl:versionInfo", "$(version-EN)", "en~lang"]
+
+
+  ###
+  # mappings for the Classes sheet
+  ###
+  classes:
+    sources:
+      - ['csv/Classes.csv~csv']
+    subject: "spo:$(id)"
+    ### we need some handling for ids with other prefixes, but get NullPointer exception here
+    # condition:
+    #   function: "grel:string_contains"
+    #   parameters:
+    #     - [grel:valueParameter, "$(id)"]
+    #     - [grel:string_sub, "\:"]
+    po:
+      ## simple direct mappings:
+      - ["a", "owl:Class"]
+      - ["rdfs:label", $(label-EN), "en~lang"]
+      - ["rdfs:label", $(label-DE), "de~lang"]
+      - ["skos:preflabel", $(label-EN), "en~lang"]
+      - ["skos:preflabel", $(label-DE), "de~lang"]
+      - ["rdfs:comment", $(description-EN), "en~lang"] # JOD prefers rdfs:comment instead of dc:description 
+
+      ## mappings for maybe semicolon/comma separated values
+      - p: "skos:altlabel"
+        o:
+#          function: "grel:string_split" ## throws NullPointerExceptions for every missing value
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#split"
+          parameters:
+            - ["grel:valueParameter", "$(synonyms-EN)"]
+            - ["grel:p_string_sep", ";"]
+#          value: $(synonyms-EN)
+          language: en
+      - p: "skos:altlabel"
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#split"
+          parameters:
+            - ["grel:valueParameter", "$(synonyms-DE)"]
+            - ["grel:p_string_sep", ";"]
+          value: $(synonyms-DE)
+          language: de
+      - p: "rdfs:subClassOf"
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefixes"
+          parameters:
+#            - ["http://w3id.org/steel/xlsx2owl-utils/functions.ttl#param_array", "test"]
+            - parameter: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#param_array"
+              value:
+                function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#split"
+                parameters:
+                  - ["grel:valueParameter", "$(parentClass)"]
+                  - ["grel:p_string_sep", ";"]
+            #- ["grel:valueParameter", "$(parentClass)"]
+#          value: "$(parentClass)"
+          type: iri
+      - p: ["rdfs:seeAlso", "skos:related"]
+        o: # TODO: split by semicolon
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+          parameters:
+            - ["grel:valueParameter", "$(related)"]
+#          value: "$(related)"
+          type: iri
+
+
+  objectProperties:
+    sources:
+      - ['csv/Relations.csv~csv']
+    subject: "spo:$(id)"
+    po:
+      - ["a", "owl:ObjectProperty"]
+
+      ## rdfs:label, skos:preflabel for en
+      - ["rdfs:label", $(label-EN), en~lang]
+      - [skos:preflabel, $(label-EN), en~lang]
+
+      ## dc:description
+      - [dc:description, $(description-EN), en~lang]
+
+      ## domain and range
+      - [rdfs:domain, spo:$(domain)~iri]
+      - [rdfs:range, spo:$(range)~iri]
+
+      ## synonyms
+      - p: "skos:altlabel"
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#split"
+          parameters:
+            - ["grel:valueParameter", "$(synonyms-EN)"]
+            - ["grel:p_string_sep", ";"]
+#          value: $(synonyms-EN)
+          language: en
+      ## **TODO:** add superProperty
+
+
+  DatatypeProperties:
+    sources:
+      - ['csv/Attributes.csv~csv']
+    subject: "spo:$(id)"
+    po:
+      - ["a", "owl:DatatypeProperty"]
+
+      ## rdfs:label, skos:preflabel for en
+      - [rdfs:label, $(label-EN), en~lang]
+      - [skos:preflabel, $(label-EN), en~lang]
+
+      ## dc:description
+      - [dc:description, $(description-EN), en~lang]
+
+      ## domain and range
+      - [rdfs:domain, spo:$(domain)~iri]
+      - p: rdfs:range
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+          parameters:
+            - ["grel:valueParameter", "$(datatype)"]
+#          value: "$(datatype)"
+          type: iri ## causes error with rmlmapper 4.13 instead 4.10: "ERROR be.ugent.rml.cli.Main.main(389) - Not a valid (absolute) IRI:"
+      ## **TODO:** add superProperty

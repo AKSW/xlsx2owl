@@ -1,0 +1,140 @@
+@prefix cc:      <http://creativecommons.org/ns#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doap:    <http://usefulinc.com/ns/doap#> .
+@prefix fno:     <https://w3id.org/function/ontology#> .
+@prefix fnoi:    <https://w3id.org/function/vocabulary/implementation#> .
+@prefix fnom:    <https://w3id.org/function/vocabulary/mapping#> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix grel:    <http://users.ugent.be/~bjdmeest/function/grel.ttl#> .
+@prefix grelm:   <http://fno.io/grel/rmlmapping#> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix void:    <http://rdfs.org/ns/void#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix sfunc: <http://w3id.org/steel/xlsx2owl-utils/functions.ttl#> .
+
+# Data types
+
+grel:valueParam
+    a             fno:Parameter ;
+    fno:name      "input value" ;
+    rdfs:label    "input value" ;
+    fno:predicate grel:valueParameter ;
+    fno:type      xsd:string ;
+    fno:required  "true"^^xsd:boolean .
+
+grel:param_string_sep
+    a             fno:Parameter ;
+    fno:name      "sep" ;
+    rdfs:label    "sep" ;
+    fno:predicate grel:p_string_sep ;
+    fno:type      xsd:string ;
+    fno:required  "true"^^xsd:boolean .
+    
+grel:output_array
+    a             fno:Output ;
+    fno:name      "array" ;
+    rdfs:label    "array" ;
+    fno:predicate grel:o_array ;
+    fno:type      rdf:List .
+
+sfunc:param_array
+    a             fno:Parameter ;
+    fno:name      "array" ;
+    rdfs:label    "array" ;
+    fno:predicate sfunc:param_array ;
+    fno:type      rdf:List ;
+    fno:required  "true"^^xsd:boolean 
+    .
+
+#SPLIT from GREL
+
+grel:string_split
+    a                   fno:Function ;
+    fno:name            "split" ;
+    dcterms:description "split" ;
+    fno:expects         ( grel:valueParam grel:param_string_sep ) ;
+    fno:returns         ( grel:output_array ) .
+    
+grelm:splitMapping
+    a                    fnoi:Mapping ;
+    fno:function         grel:string_split ;
+    fno:implementation   grelm:javaString ;
+# TODO if not clear
+    fno:parameterMapping [ ] ;
+# TODO if not clear
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "split" ] ;
+    .
+
+# grelm string utils
+
+grelm:javaString
+    a                  fnoi:JavaClass ;
+    doap:download-page "GrelFunctions.jar" ;
+    fnoi:class-name    "io.fno.grel.StringFunctions" .
+
+# utils from InfAI
+
+sfunc:functionsImpl
+    a                  fnoi:JavaClass ;
+    doap:download-page "resources/xlsx2owl-utils.jar" ;
+    fnoi:class-name    "org.w3id.steel.xlsx2owl.utils.MappingUtils" ;
+    .
+
+# SPLIT from InfAI
+
+sfunc:splitMapping
+    a                    fnoi:Mapping ;
+    fno:function         sfunc:split ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "split" ] .
+
+sfunc:split
+    a                   fno:Function ;
+    fno:name            "split" ;
+    dcterms:description "Returns the array of strings obtained by splitting `s` at wherever `sep` is found in it" ;
+    fno:expects         ( grel:valueParam grel:param_string_sep ) ;
+    fno:returns         ( grel:output_array ) ;
+    .
+
+# ExpandPrefix from InfAI
+
+sfunc:expandPrefix
+    a                   fno:Function ;
+    fno:name            "expandPrefix" ;
+    dcterms:description "expand a prefix of the given Iri if present" ;
+    fno:expects         ( grel:valueParam ) ;
+    fno:returns         ( grel:valueParam ) ;
+    .
+    
+sfunc:expandPrefixes
+    a                   fno:Function ;
+    fno:name            "expandPrefixes" ;
+    dcterms:description "expand prefixes of the given Iri List if present" ;
+    fno:expects         ( sfunc:param_array ) ;
+    fno:returns         ( grel:output_array ) ;
+    .
+
+sfunc:expandPrefixMapping
+    a                    fnoi:Mapping ;
+    fno:function         sfunc:expandPrefix ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "expandIriPrefix" ] .
+
+sfunc:expandPrefixesMapping
+    a                    fnoi:Mapping ;
+    fno:function         sfunc:expandPrefixes ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "expandIriPrefixes" ] .
+                           

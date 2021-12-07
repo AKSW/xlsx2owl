@@ -1,0 +1,6 @@
+/rmlmapper*.jar
+/csv/
+/StahlDigital-vocab.*
+/StahlDigital-vocab.test*.ttl
+/xlsx2owl-StahlDigital*.xlsx
+/yarrrml.yml.ttl
