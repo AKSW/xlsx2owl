@@ -31,5 +31,6 @@ COPY tools /home/user/tools
 COPY resources /home/user/resources
 
 VOLUME ["/home/user/data"]
+COPY resources /home/user/data/resources
 WORKDIR /home/user/data
 ENTRYPOINT ["/bin/bash", "/home/user/xlsx2owl-StahlDigital.sh"]

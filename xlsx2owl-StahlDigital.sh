@@ -25,7 +25,7 @@ optXlsxFilename="xlsx2owl-StahlDigital.xlsx"
 # YARRRML filename
 optYarrrmlFilename="yarrrml.yml"
 # csv tmp folder
-optCsvFolder="${optWorkFolder}/csv"
+optCsvFolder="${optWorkFolder}csv"
 # output Prefix
 optOutputFilenamePrefix="StahlDigital-vocab"
 # url for downloading spreadsheet
