@@ -1,6 +1,6 @@
 ---
 prefixes:
-  spo: "http://w3id.org/steel/ProcessOntology/"
+  spo: "https://w3id.org/steel/ProcessOntology/"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   dc: "http://purl.org/dc/elements/1.1/"
   skos: "http://www.w3.org/2004/02/skos/core#"
@@ -9,7 +9,7 @@ prefixes:
   xsd: "http://www.w3.org/2001/XMLSchema#"
   emmo: "http://emmo.info/emmo#"
   pmdco: "https://material-digital.de/pmdco/"
-base: "http://w3id.org/steel/ProcessOntology/"
+base: "https://w3id.org/steel/ProcessOntology/"
 
 mappings:
 
