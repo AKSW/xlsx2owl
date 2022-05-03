@@ -20,6 +20,8 @@ optScriptDir="$(dirname "${0}")"
 optWorkFolder="./"
 # tool directory
 optToolFolder=${optScriptDir}/tools
+# resources directory
+optResourcesFolder=${optScriptDir}/resources
 # input xlsx filename, used as download target filename as well if download specified
 optXlsxFilename="xlsx2owl-StahlDigital.xlsx"
 # YARRRML filename
@@ -42,12 +44,12 @@ printUsage() {
 if [[ $# -eq 1 ]]
 then
     ## checking url
-    ## should start with http or https and not contain one of { ";'}:
-    if [[ "${1}" =~ ^https?:\/\/[^\ \"\;\']+$ ]]
+    ## should start with http or https or file and not contain one of { ";'}:
+    if [[ "${1}" =~ ^(https?|file):\/\/[^\ \"\;\']+$ ]]
     then
         optDownloadUrl="${1}"
     else
-        echo "unexpected url format: '$*'"
+        echo "unexpected url format (file,http or https supported): '$*'"
         printUsage
         exit 1
     fi
@@ -99,10 +101,11 @@ runMapper() {
     paramSuffix=${2}
     targetFilename="${optOutputFilenamePrefix}.${paramSuffix}"
     echo -n "  ${paramType}..."
-    java -jar "${optToolFolder}/rmlmapper.jar" --mappingfile "${optWorkFolder}/${optYarrrmlFilename}.ttl" --duplicates --functionfile "${optScriptDir}/resources/functions_xlsx2owl.ttl" --serialization "${paramType}" --outputfile "${targetFilename}"
+    java -jar -DIRI_PREFIX_MAP_FILE=${optResourcesFolder}/prefixes.csv "${optToolFolder}/rmlmapper.jar" --mappingfile "${optWorkFolder}/${optYarrrmlFilename}.ttl" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --serialization "${paramType}" --outputfile "${targetFilename}"
     echo "${targetFilename}"
 }
 echo "create graph as turtle and nquads..."
+echo "rmlmapper version"; unzip -p "${optToolFolder}/rmlmapper.jar" "META-INF/maven/be.ugent.rml/rmlmapper/pom.properties" | grep -E "version=|artifactId="
 runMapper turtle ttl
 runMapper nquads nq
 # podman run --rm -v "$(pwd):/home/rmluser/data" yarrrmlmapper "${$optYarrrmlFilename}" --use-local-rml-mapper --duplicates --functionfile resources/functions_xlsx2owl.ttl --serialization turtle --outputfile "${optOutputFilenamePrefix}.ttl"

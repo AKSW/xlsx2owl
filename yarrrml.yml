@@ -28,11 +28,12 @@ mappings:
 
 
   ###
-  # mappings for the Classes sheet
+  # mappings for the **Classes** sheet
   ###
   classes:
     sources:
       - ['csv/Classes.csv~csv']
+    ## **TODO:** test expandPrefix function
     subject: "spo:$(id)"
     ### we need some handling for ids with other prefixes, but get NullPointer exception here
     # condition:
@@ -89,7 +90,9 @@ mappings:
 #          value: "$(related)"
           type: iri
 
-
+  ###
+  # mappings for the **Relations** sheet
+  ###
   objectProperties:
     sources:
       - ['csv/Relations.csv~csv']
@@ -105,7 +108,9 @@ mappings:
       - [dc:description, $(description-EN), en~lang]
 
       ## domain and range
+      ## **TODO:** use expandPrefix function
       - [rdfs:domain, spo:$(domain)~iri]
+      ## **TODO:** use expandPrefix function
       - [rdfs:range, spo:$(range)~iri]
 
       ## synonyms
@@ -119,7 +124,9 @@ mappings:
           language: en
       ## **TODO:** add superProperty
 
-
+  ###
+  # mappings for the **Attributes** sheet
+  ###
   DatatypeProperties:
     sources:
       - ['csv/Attributes.csv~csv']
@@ -135,7 +142,9 @@ mappings:
       - [dc:description, $(description-EN), en~lang]
 
       ## domain and range
+      ## **TODO:** use expandPrefix function
       - [rdfs:domain, spo:$(domain)~iri]
+      ## **TODO:** use expandPrefix function
       - p: rdfs:range
         o:
           function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"

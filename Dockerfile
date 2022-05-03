@@ -19,18 +19,18 @@ RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
 RUN groupadd --system -g 1000 user \
     # Change user id (-u) to user that has permissions to read input and write result!
     && useradd --system -s /bin/bash -g user -u 1000 user --create-home
+RUN mkdir /data && chown user:user /data
 
 USER user:user
 WORKDIR /home/user
 
-RUN npm install @rmlio/yarrrml-parser \
-    && mkdir /home/user/data
+RUN npm install @rmlio/yarrrml-parser
 
 COPY xlsx2owl-StahlDigital.sh yarrrml.yml /home/user/
 COPY tools /home/user/tools
 COPY resources /home/user/resources
 
-VOLUME ["/home/user/data"]
-COPY resources /home/user/data/resources
-WORKDIR /home/user/data
+VOLUME ["/data"]
+#COPY resources /home/user/data/resources
+WORKDIR /data
 ENTRYPOINT ["/bin/bash", "/home/user/xlsx2owl-StahlDigital.sh"]
