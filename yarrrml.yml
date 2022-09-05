@@ -70,24 +70,17 @@ mappings:
           language: de
       - p: "rdfs:subClassOf"
         o:
-          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefixes"
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#splitAndExpandPrefixes"
           parameters:
-#            - ["http://w3id.org/steel/xlsx2owl-utils/functions.ttl#param_array", "test"]
-            - parameter: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#param_array"
-              value:
-                function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#split"
-                parameters:
-                  - ["grel:valueParameter", "$(parentClass)"]
-                  - ["grel:p_string_sep", ";"]
-            #- ["grel:valueParameter", "$(parentClass)"]
-#          value: "$(parentClass)"
+            - ["grel:valueParameter", "$(parentClass)"]
+            - ["grel:p_string_sep", ";"]
           type: iri
       - p: ["rdfs:seeAlso", "skos:related"]
-        o: # TODO: split by semicolon
-          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#splitAndExpandPrefixes"
           parameters:
             - ["grel:valueParameter", "$(related)"]
-#          value: "$(related)"
+            - ["grel:p_string_sep", ";"]
           type: iri
 
   ###
