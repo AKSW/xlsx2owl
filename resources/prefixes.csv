@@ -1,8 +1,0 @@
-prefix,iri
-dc,http://purl.org/dc/elements/1.1/
-owl,http://www.w3.org/2002/07/owl#
-xsd,http://www.w3.org/2001/XMLSchema#
-emmo,http://emmo.info/emmo#
-pmdco,https://material-digital.de/pmdco/
-spo,https://w3id.org/steel/ProcessOntology/
-base,https://w3id.org/steel/ProcessOntology/
