@@ -1,0 +1,74 @@
+@prefix : <https://w3id.org/steel/ProcessOntology/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/steel/ProcessOntology/> a owl:Ontology;
+  dc:description "Ontology description EN"@en;
+  rdfs:label "CI Mock FIle"@en;
+  owl:versionInfo "Test Input Version 1"@en;
+  skos:prefLabel "CI Mock FIle"@en .
+
+:ConceptA a owl:Class;
+  rdfs:comment "ConceptA Description EN"@en;
+  rdfs:label "ConceptA Label DE"@de, "ConceptA Label EN"@en;
+  rdfs:seeAlso :ConceptB, :ConceptC;
+  skos:altlabel " ConceptA Synonym 2 DE"@de, " ConceptA Synonym 2 EN"@en, "ConceptA Synonym 1 DE"@de,
+    "ConceptA Synonym 1 EN"@en;
+  skos:preflabel "ConceptA Label DE"@de, "ConceptA Label EN"@en;
+  skos:related :ConceptB, :ConceptC .
+
+:ConceptB a owl:Class;
+  rdfs:comment "ConceptB Description EN"@en;
+  rdfs:label "ConceptB Label EN"@en;
+  rdfs:subClassOf :ConceptA, :ConceptC;
+  skos:altlabel "ConceptB Synonym EN"@en;
+  skos:preflabel "ConceptB Label EN"@en .
+
+:ConceptC a owl:Class;
+  rdfs:comment "ConceptC Description EN"@en;
+  rdfs:label "ConceptC Label DE"@de, "ConceptC Label EN"@en;
+  rdfs:subClassOf :ConceptA;
+  skos:altlabel "ConceptC Synonym DE"@de, "ConceptC Synonym EN"@en;
+  skos:preflabel "ConceptC Label DE"@de, "ConceptC Label EN"@en .
+
+:attributeA a owl:DatatypeProperty;
+  dc:description "attributeA Description EN"@en;
+  rdfs:domain :ConceptA;
+  rdfs:label "attributeA Label EN"@en;
+  rdfs:range xsd:string;
+  skos:preflabel "attributeA Label EN"@en .
+
+:attributeB a owl:DatatypeProperty;
+  dc:description "attributeB Description EN"@en;
+  rdfs:domain :ConceptB;
+  rdfs:label "attributeB Label EN"@en;
+  rdfs:range xsd:string;
+  skos:preflabel "attributeB Label EN"@en .
+
+:attributeC a owl:DatatypeProperty;
+  rdfs:label "attributeC Label EN"@en;
+  skos:preflabel "attributeC Label EN"@en .
+
+:relationA a owl:ObjectProperty;
+  dc:description "relationA Description EN"@en;
+  rdfs:domain :ConceptA;
+  rdfs:label "relationA Label EN"@en;
+  rdfs:range :ConceptB;
+  skos:altlabel " relationA Synonym 2 EN"@en, "relationA Synonym 1 EN"@en;
+  skos:preflabel "relationA Label EN"@en .
+
+:relationB a owl:ObjectProperty;
+  dc:description "relationB Description EN"@en;
+  rdfs:domain :ConceptB;
+  rdfs:label "relationB Label EN"@en;
+  rdfs:range :ConceptA;
+  skos:altlabel "relationB Synonym EN"@en;
+  skos:preflabel "relationB Label EN"@en .
+
+:relationC a owl:ObjectProperty;
+  rdfs:label "relationC Label EN"@en;
+  skos:preflabel "relationC Label EN"@en .
