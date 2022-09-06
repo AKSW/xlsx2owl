@@ -101,7 +101,7 @@ runMapper() {
     paramSuffix=${2}
     targetFilename="${optOutputFilenamePrefix}.${paramSuffix}"
     echo -n "  ${paramType}..."
-    java -jar -DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv "${optToolFolder}/rmlmapper.jar" --mappingfile "${optWorkFolder}/${optYarrrmlFilename}.ttl" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --serialization "${paramType}" --outputfile "${targetFilename}"
+    java -jar -DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv "${optToolFolder}/rmlmapper.jar" --mappingfile "${optWorkFolder}/${optYarrrmlFilename}.ttl" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --functionfile "${optResourcesFolder}/functions_grel.ttl" --functionfile "${optResourcesFolder}/grel_java_mapping.ttl" --serialization "${paramType}" --outputfile "${targetFilename}"
     echo "${targetFilename}"
 }
 echo "create graph as turtle and nquads..."

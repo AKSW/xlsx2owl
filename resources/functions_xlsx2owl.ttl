@@ -6,7 +6,6 @@
 @prefix fnom:    <https://w3id.org/function/vocabulary/mapping#> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
 @prefix grel:    <http://users.ugent.be/~bjdmeest/function/grel.ttl#> .
-@prefix grelm:   <http://fno.io/grel/rmlmapping#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix void:    <http://rdfs.org/ns/void#> .
@@ -16,29 +15,6 @@
 #############
 # Parameter #
 #############
-
-grel:valueParam
-    a             fno:Parameter ;
-    fno:name      "input value" ;
-    rdfs:label    "input value" ;
-    fno:predicate grel:valueParameter ;
-    fno:type      xsd:string ;
-    fno:required  "true"^^xsd:boolean .
-
-grel:param_string_sep
-    a             fno:Parameter ;
-    fno:name      "sep" ;
-    rdfs:label    "sep" ;
-    fno:predicate grel:p_string_sep ;
-    fno:type      xsd:string ;
-    fno:required  "true"^^xsd:boolean .
-    
-grel:output_array
-    a             fno:Output ;
-    fno:name      "array" ;
-    rdfs:label    "array" ;
-    fno:predicate grel:o_array ;
-    fno:type      rdf:List .
 
 sfunc:param_array
     a             fno:Parameter ;
@@ -52,34 +28,6 @@ sfunc:param_array
 #############
 # Functions #
 #############
-
-#SPLIT from GREL
-
-grel:string_split
-    a                   fno:Function ;
-    fno:name            "split" ;
-    dcterms:description "split" ;
-    fno:expects         ( grel:valueParam grel:param_string_sep ) ;
-    fno:returns         ( grel:output_array ) .
-    
-grelm:splitMapping
-    a                    fno:Mapping ;
-    fno:function         grel:string_split ;
-    fno:implementation   grelm:javaString ;
-# TODO if not clear
-    fno:parameterMapping [ ] ;
-# TODO if not clear
-    fno:returnMapping    [ ] ;
-    fno:methodMapping    [ a                fnom:StringMethodMapping ;
-                           fnom:method-name "split" ] ;
-    .
-
-# grelm string utils
-
-grelm:javaString
-    a                  fnoi:JavaClass ;
-    doap:download-page "GrelFunctions.jar" ;
-    fnoi:class-name    "io.fno.grel.StringFunctions" .
 
 # utils from InfAI
 

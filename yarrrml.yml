@@ -19,7 +19,17 @@ mappings:
   ontologyMetadata:
     sources: 
       - ['csv/OntologyMetadata.csv~csv']
-    subject: "spo:"
+   # subject: "spo:"
+    subject:
+      # remove trailing slash "/" from ontology prefix IRI
+      function: "grel:string_chomp"
+      parameters: 
+        - parameter: "grel:valueParameter"
+          value: 
+            function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+            parameters: 
+            - ["grel:valueParameter", "spo:"]
+        - ["grel:p_string_sep", "/"]
     po:
       - ["a", "owl:Ontology"]
       - [ ["rdfs:label", "skos:prefLabel"], "$(title-EN)", "en~lang"]
@@ -34,6 +44,8 @@ mappings:
     sources:
       - ['csv/Classes.csv~csv']
     ## **TODO:** test expandPrefix function
+    ## **TODO:** add filter to create only classes in our own namespace
+    ## **TODO:** we probably want to change 'spo' prefix to something like 'target' or use base prefix
     subject: "spo:$(id)"
     ### we need some handling for ids with other prefixes, but get NullPointer exception here
     # condition:

@@ -6,7 +6,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/steel/ProcessOntology/> a owl:Ontology;
+<https://w3id.org/steel/ProcessOntology> a owl:Ontology;
   dc:description "Ontology description EN"@en;
   rdfs:label "CI Mock FIle"@en;
   owl:versionInfo "Test Input Version 1"@en;
