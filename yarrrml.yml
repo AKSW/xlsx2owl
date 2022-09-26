@@ -9,6 +9,7 @@ prefixes:
   xsd: "http://www.w3.org/2001/XMLSchema#"
   emmo: "http://emmo.info/emmo#"
   pmdco: "https://material-digital.de/pmdco/"
+  foaf: "http://xmlns.com/foaf/0.1/" 
 base: "https://w3id.org/steel/ProcessOntology/"
 
 mappings:
@@ -35,6 +36,7 @@ mappings:
       - [ ["rdfs:label", "skos:prefLabel"], "$(title-EN)", "en~lang"]
       - ["dc:description", "$(description-EN)", "en~lang"]
       - ["owl:versionInfo", "$(version-EN)", "en~lang"]
+      - ["foaf:depiction", "https:graph.png~iri"]
 
 
   ###
