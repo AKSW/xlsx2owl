@@ -57,7 +57,9 @@ optDebug=false
 
 printUsage() {
 cat <<EOF
-'xlsx2owl-StahlDigital.sh [options] [download-url]'
+usage:
+xlsx2owl-StahlDigital.sh [options] [download-url]
+
 positional parameters:
   [download-url]:
             optional url from where the spreadsheet gets downloaded.
@@ -198,7 +200,7 @@ if [[ -n ${optDownloadUrl:-} ]] # expand variable because of "set -o nounset"
 then
 ## download file
     echo "downloading spreadsheet from '${1}'"
-    curl "${1}" --output "${optXlsxFilename}"
+    curl -L --cookie cookie "${1}" --output "${optXlsxFilename}"
 fi
 
 ###
