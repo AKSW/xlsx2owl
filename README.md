@@ -29,7 +29,7 @@ named parameters:
             defaults to 'yarrrml.yml' in the scripts directory.
   -o, --outputPrefix <PREFIX> :
             set prefix <PREFIX> for the generated output.
-            default 'xlst-out', relativ to the current working directory.
+            default 'rdf-out', relativ to the current working directory.
   -i, --input <FILE> :
             path <FILE> to the input spreadsheet file to use
             or where to store spreadfile downloaded.
