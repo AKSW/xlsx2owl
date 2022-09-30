@@ -36,7 +36,7 @@ mappings:
       - [ ["rdfs:label", "skos:prefLabel"], "$(title-EN)", "en~lang"]
       - ["dc:description", "$(description-EN)", "en~lang"]
       - ["owl:versionInfo", "$(version-EN)", "en~lang"]
-      - ["foaf:depiction", "https:graph.png~iri"]
+      - ["foaf:depiction", "spo:graph.png~iri"]
 
 
   ###
