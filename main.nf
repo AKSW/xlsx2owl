@@ -21,9 +21,7 @@ if (!CI_REGISTRY_PASSWORD) {
 }
 
 /*
- * Build a Docker container for JOD
- * TODO: Description
- * 
+ * Build a Docker image
  */
 
 process buildImage {
@@ -65,9 +63,7 @@ process TODO_testImage {
 }
 
 /*
- * Build a Docker container for JOD
- * TODO: Description
- *
+ * Push Docker image to registry
  */
 
 process pushImage {
@@ -86,72 +82,3 @@ process pushImage {
     docker push "$CI_REGISTRY_IMAGE${tag}"
     """
 }
-
-// process pullXlsx2owlImage {
-//     beforeScript "docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
-
-//     input:
-//         val buildDockerContainer_done
-//     output:
-//         val "" into pullXlsx2owlImage_done
-//     """
-//     #!/usr/bin/env bash
-    
-//     docker pull "git.infai.org:4567/materialdigital/stahldigital/xlsx2owl-stahl:latest"
-//     """
-
-// }
-
-// process xlsx2owl {
-//     container 'git.infai.org:4567/materialdigital/stahldigital/xlsx2owl-stahl:latest'
-//     beforeScript "chmod a+w ."
-//     echo true
-//     stageInMode "copy"
-//     stageOutMode "copy"
-//     input:
-//         val pullXlsx2owlImage_done
-// //     	path input from "$projectDir/xlsx2owl-StahlDigital.xlsx"
-
-//     output:
-//         path "StahlDigital-vocab.ttl" into ttl
-// 	val "" into xlsx2owl_done
-
-//     """
-//     export processDir=\$(pwd)
-//     cd /home/user/
-//     bash -x "/home/user/xlsx2owl-StahlDigital.sh" "https://files.iis.aksw.org/s/Pj2ZC9WRNMgJMrx/download/CI_MOCK_DATA.xlsx"
-//     cp StahlDigital-vocab.ttl \$processDir
-//     cp StahlDigital-vocab.nq \$processDir
-//     """
-// }
-
-// process pullJodImage {
-//     beforeScript "docker login -u $CI_REGISTRY_USER -p $CI_JOD_TOKEN $CI_REGISTRY"
-
-//     input:
-//         val xlsx2owl_done
-//     output:
-//         val "" into pullJodImage_done
-
-//     """
-//     docker pull "git.infai.org:4567/materialdigital/stahldigital/jod-for-stahl:latest"
-//     """
-
-// }
-
-// process jod {
-//     container 'git.infai.org:4567/materialdigital/stahldigital/jod-for-stahl:latest'
-//     beforeScript "chmod a+w ."
-//     echo true
-//     stageInMode "copy"
-//     stageOutMode "copy"
-//     publishDir '.', mode: 'copy'
-//     input:
-//     	path ttl
-//     output:
-//         path "_site/*" into site
-
-//     """
-//     run_all.sh
-//     """
-// }
