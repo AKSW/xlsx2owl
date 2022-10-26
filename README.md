@@ -37,11 +37,13 @@ named parameters:
 ```
 
 ### run as docker container
-* build docker image, e.g. via `$ buildah bud -t xlsx2owl-sd ./`
-* switch to working directory
-* run docker image, e.g. via `$ podman run -it --rm -v "./:/data/" xlsx2owl-sd --input '/home/user/xlsx2owl-Example.xlsx'`
-* run docker image with test input e.g. via `$ podman run -it --rm -v "./test:/data/" xlsx2owl-sd:test --debug -o test-o
-ut 'file:///data/test-input.xlsx'`
+* build docker image:
+    * either manual via `$ buildah bud -t xlsx2owl ./`
+    * or with nextflow via `
+* run xlsx2owl with docker image on `xlsx2owl-Example.xlsx` in current directory e.g. via `$ podman run -it --rm -v "./:/data/" xlsx2owl-sd --input '/data/xlsx2owl-Example.xlsx'`
+
+### run test
+* run docker image with test input e.g. via `$ podman run -it --rm -v "./test:/data/" xlsx2owl --debug -o /data/test-out 'file:///data/test-input.xlsx'`
 
 ## Dependencies
 
@@ -59,3 +61,5 @@ used tools:
 * curl
 
 We want to kindly thank [Sebastian Tramp](https://github.com/seebi) and [eccenca GmbH](https://eccenca.com) for the initial idea, spreadsheet structure and rich input.
+
+Work for this has been funded by the German Federal Ministry of Education and Research under grant number 13XP5116B.

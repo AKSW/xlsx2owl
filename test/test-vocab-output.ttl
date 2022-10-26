@@ -12,7 +12,7 @@
   rdfs:label "CI Mock FIle"@en;
   owl:versionInfo "Test Input Version 1"@en;
   skos:prefLabel "CI Mock FIle"@en;
-  foaf:depiction <https:graph.png> .
+  foaf:depiction :graph.png .
 
 :ConceptA a owl:Class;
   rdfs:comment "ConceptA Description EN"@en;
