@@ -1,6 +1,7 @@
 ---
 prefixes:
   spo: "https://w3id.org/steel/ProcessOntology/"
+  spoi: "https://w3id.org/steel/ProcessOntologyInstances/"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
   dc: "http://purl.org/dc/elements/1.1/"
   skos: "http://www.w3.org/2004/02/skos/core#"
@@ -160,3 +161,54 @@ mappings:
 #          value: "$(datatype)"
           type: iri ## causes error with rmlmapper 4.13 instead 4.10: "ERROR be.ugent.rml.cli.Main.main(389) - Not a valid (absolute) IRI:"
       ## **TODO:** add superProperty
+
+
+###
+# mapping of individuals and their relations+attributes
+  Individuals:
+    sources:
+      - ['csv/Individuals.csv~csv']
+    subject: "spoi:$(id)"
+    po: 
+      - [[rdfs:label, skos:preflabel], $(label-EN), en~lang]
+      - [dc:description, $(description-EN), en~lang]
+      - p: "a"
+        o:
+          function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+          parameters:
+            - ["grel:valueParameter", "$(type)"]
+          type: iri
+
+  IndRelations:
+    sources:
+      - ['csv/IndRelations.csv~csv']
+    subject: "spoi:$(individual)" # duplicate subject iri with 'Individuals', but easier than mapping
+    po:
+      - p: "spo:$(relation)" # TODO: add support for other namespaces, the following is not working
+      #- p: # got yarrrml error with predicate functions, see https://github.com/RMLio/yarrrml-parser/issues/178
+      #    function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+      #    parameters:
+      #      - ["grel:valueParameter", "$(relation)"]
+      #    type: iri
+        o: "spoi:$(value-individual)" # ISSUE: only individuals within spoi are supported this way
+        
+  IndAttributes:
+    sources:
+      - ['csv/IndAttributes.csv~csv']
+    subject: "spoi:$(individual)" # duplicate subject iri with 'Individuals', but easier than mapping
+    po:
+      - p: "spo:$(attribute)" # TODO: add support for other namespaces, the following is not working
+      #- p: # got yarrrml error with predicate functions, see https://github.com/RMLio/yarrrml-parser/issues/178
+      #    function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+      #    parameters:
+      #      - ["grel:valueParameter", "$(attribute)"]
+      #    type: iri
+        o: 
+          value: "$(value)"
+          # TODO: find a way to support datatype, see https://github.com/kg-construct/mapping-challenges/tree/main/challenges/datatype-map
+          # got exception from yarrrml parser for the following:
+          #datatype: 
+          #  function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"
+          #  parameters:
+          #    - ["grel:valueParameter", "$(type)"]
+          #  type: iri

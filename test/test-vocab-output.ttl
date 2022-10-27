@@ -74,3 +74,18 @@
 :relationC a owl:ObjectProperty;
   rdfs:label "relationC Label EN"@en;
   skos:preflabel "relationC Label EN"@en .
+
+<https://w3id.org/steel/ProcessOntologyInstances/individualA> a :ConceptA;
+  dc:description "Individual A description"@en;
+  rdfs:label "Individual A"@en;
+  skos:preflabel "Individual A"@en;
+  :relationA "https://w3id.org/steel/ProcessOntologyInstances/individualB" .
+
+<https://w3id.org/steel/ProcessOntologyInstances/individualB> a :ConceptB;
+  dc:description "Individual B description"@en;
+  rdfs:label "Individual B"@en;
+  skos:preflabel "Individual B"@en .
+
+<https://w3id.org/steel/ProcessOntologyInstances/individualC> a :ConceptA;
+  rdfs:label "Individual C"@en;
+  skos:preflabel "Individual C"@en .
