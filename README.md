@@ -63,3 +63,8 @@ used tools:
 We want to kindly thank [Sebastian Tramp](https://github.com/seebi) and [eccenca GmbH](https://eccenca.com) for the initial idea, spreadsheet structure and rich input.
 
 Work for this has been funded by the German Federal Ministry of Education and Research under grant number 13XP5116B.
+
+## License
+This project is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
