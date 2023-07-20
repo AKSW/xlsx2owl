@@ -1,12 +1,12 @@
 # YARRRML + RMLMapper
 
-FROM openjdk:8
+FROM openjdk:17-bullseye
+# we want a debian for nodejs install later on, bullseye = debian v11
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-# took hint for version 14 from an official yarrrml docker file
-# a current node.js version (at least node.js 17.x) seems to cause problems
+RUN cat /etc/os-release && java -version
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 #RUN curl -sL https://deb.nodesource.com/setup_current.x | bash -
 
 RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
