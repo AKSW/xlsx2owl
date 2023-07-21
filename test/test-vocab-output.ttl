@@ -1,10 +1,20 @@
 @prefix : <https://w3id.org/steel/ProcessOntology/> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix emmo: <http://emmo.info/emmo#> .
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#> .
+@prefix fno: <https://w3id.org/function/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix grel: <http://users.ugent.be/~bjdmeest/function/grel.ttl#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pmdco: <https://material-digital.de/pmdco/> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix void: <http://rdfs.org/ns/void#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/steel/ProcessOntology> a owl:Ontology;
@@ -18,7 +28,7 @@
   rdfs:comment "ConceptA Description EN"@en;
   rdfs:label "ConceptA Label DE"@de, "ConceptA Label EN"@en;
   rdfs:seeAlso :ConceptB, :ConceptC;
-  skos:altlabel " ConceptA Synonym 2 DE"@de, " ConceptA Synonym 2 EN"@en, "ConceptA Synonym 1 DE"@de,
+  skos:altlabel " ConceptA Synonym 2 DE"@de, "ConceptA Synonym 1 DE"@de, " ConceptA Synonym 2 EN"@en,
     "ConceptA Synonym 1 EN"@en;
   skos:preflabel "ConceptA Label DE"@de, "ConceptA Label EN"@en;
   skos:related :ConceptB, :ConceptC .
@@ -33,7 +43,7 @@
 :ConceptC a owl:Class;
   rdfs:comment "ConceptC Description EN"@en;
   rdfs:label "ConceptC Label DE"@de, "ConceptC Label EN"@en;
-  rdfs:subClassOf :ConceptA;
+  rdfs:subClassOf owl:Class;
   skos:altlabel "ConceptC Synonym DE"@de, "ConceptC Synonym EN"@en;
   skos:preflabel "ConceptC Label DE"@de, "ConceptC Label EN"@en .
 
