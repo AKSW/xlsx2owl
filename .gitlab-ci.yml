@@ -1,41 +1,30 @@
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Docker.gitlab-ci.yml
-
-# Build a Docker image with CI/CD and push to the GitLab registry.
-# Docker-in-Docker documentation: https://docs.gitlab.com/ee/ci/docker/using_docker_build.html
-#
-# This template uses one generic job with conditional builds
-# for the default branch and all other (MR) branches.
-
-docker-build:
-  # Use the official docker image.
-  image: docker:latest
+dockerimage-build:
+  ## using buildah like described at https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#docker-alternatives
+  image: quay.io/buildah/stable
   stage: build
-  services:
-    - name: registry.hub.docker.com/library/docker:20.10.14-dind
-      command: ["--tls=false"]
-      alias: docker
-
   variables:
-    DOCKER_HOST: tcp://docker:2375/
-    DOCKER_TLS_CERTDIR: ""
+    # Use vfs with buildah. Docker offers overlayfs as a default, but buildah
+    # cannot stack overlayfs on top of another overlayfs filesystem.
+    STORAGE_DRIVER: vfs
+    # You may need this workaround for some errors: https://stackoverflow.com/a/70438141/1233435
+    BUILDAH_ISOLATION: chroot
+    # define image names
+    IMAGE_NAME_FQ: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    IMAGE_NAME_LATEST: $CI_REGISTRY_IMAGE:latest
   before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  # Default branch leaves tag empty (= latest tag)
-  # All other branches are tagged with the escaped branch name (commit ref slug)
+    # configure short-name-mode as described at https://www.redhat.com/sysadmin/container-image-short-names
+    # this removes 'Error: creating build container: short-name resolution enforced but cannot prompt without a TTY'
+    - sed -i '/short-name-mode=.*/c\short-name-mode="disabled"' /etc/containers/registries.conf
+    - tail /etc/containers/registries.conf
+    # Log in to the GitLab container registry
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        tag=""
-        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
-      else
-        tag=":$CI_COMMIT_REF_SLUG"
-        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
-      fi
-    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
-    - docker push "$CI_REGISTRY_IMAGE${tag}"
+    - buildah info
+    - buildah images
+    - buildah build -t $IMAGE_NAME_FQ
+    - buildah images
+    - buildah push $IMAGE_NAME_FQ
+    - if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then buildah tag $IMAGE_NAME_FQ $IMAGE_NAME_LATEST; buildah push $IMAGE_NAME_LATEST; fi
   # Run this job in a branch where a Dockerfile exists
   rules:
     - if: $CI_COMMIT_BRANCH
