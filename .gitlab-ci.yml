@@ -7,18 +7,17 @@ dockerimage-build:
     # cannot stack overlayfs on top of another overlayfs filesystem.
     STORAGE_DRIVER: vfs
     # You may need this workaround for some errors: https://stackoverflow.com/a/70438141/1233435
-    BUILDAH_ISOLATION: chroot
+    #BUILDAH_ISOLATION: chroot
     # define image names
     IMAGE_NAME_FQ: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-    IMAGE_NAME_LATEST: $CI_REGISTRY_IMAGE:latest
-  before_script:
+    IMAGE_NAME_LATEST: $CI_REGISTRY_IMAGE:latest    
+  script:
     # configure short-name-mode as described at https://www.redhat.com/sysadmin/container-image-short-names
     # this removes 'Error: creating build container: short-name resolution enforced but cannot prompt without a TTY'
     - sed -i '/short-name-mode=.*/c\short-name-mode="disabled"' /etc/containers/registries.conf
     - tail /etc/containers/registries.conf
     # Log in to the GitLab container registry
     - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
-  script:
     - buildah info
     - buildah images
     - buildah build -t $IMAGE_NAME_FQ
