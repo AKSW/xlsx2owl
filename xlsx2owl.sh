@@ -11,12 +11,15 @@
 # Requirements:
 # * Bash (with regexp support)
 # * getopt (from linux-utils)
-# * curl (for download
+# * curl (for download)
 # * python3 (>=3.4 according to xlsx2csv)
-# * Java 8 (for rmlmapper)
-# * Javascript (for yarrrml-parser)
+# * Java 17 (for rmlmapper)
+# * Javascript (for yarrrml-parser, e.g. node.js version 20)
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
+
+VERSION = "1.1"
+echo "xlsx2owl Version ${VERSION}"
 
 ###
 # init bash options
@@ -244,7 +247,7 @@ runMapper() {
         debugParameter="--verbose"
     fi
     echo -n "  ${paramType}..."
-    java -jar "-DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv" "${optToolFolder}/rmlmapper.jar" --mappingfile "${optRmlFullFilepath}" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --functionfile "${optResourcesFolder}/functions_grel.ttl" --functionfile "${optResourcesFolder}/grel_java_mapping.ttl" --serialization "${paramType}" --outputfile "${targetFilename}" ${debugParameter}
+    IRI_PREFIX_MAP_FILE="${optCsvFolder}/prefixes.csv" java -jar "-DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv" "${optToolFolder}/rmlmapper.jar" --mappingfile "${optRmlFullFilepath}" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --functionfile "${optResourcesFolder}/functions_grel.ttl" --functionfile "${optResourcesFolder}/grel_java_mapping.ttl" --serialization "${paramType}" --outputfile "${targetFilename}" ${debugParameter}
     RC=$?
     if [[ "${optDebug}" = true ]]
     then

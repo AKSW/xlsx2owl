@@ -26,11 +26,11 @@ WORKDIR /home/user
 
 RUN npm install @rmlio/yarrrml-parser
 
-COPY xlsx2owl-StahlDigital.sh yarrrml.yml /home/user/
+COPY xlsx2owl.sh yarrrml.yml /home/user/
 COPY tools /home/user/tools
 COPY resources /home/user/resources
 
 VOLUME ["/data"]
 #COPY resources /home/user/data/resources
 WORKDIR /data
-ENTRYPOINT ["/bin/bash", "/home/user/xlsx2owl-StahlDigital.sh"]
+ENTRYPOINT ["/bin/bash", "/home/user/xlsx2owl.sh"]
