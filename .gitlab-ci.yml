@@ -26,6 +26,5 @@ dockerimage-build:
     - if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then buildah tag $IMAGE_NAME_FQ $IMAGE_NAME_LATEST; buildah push $IMAGE_NAME_LATEST; fi
   # Run this job in a branch where a Dockerfile exists
   rules:
-    - if: $CI_COMMIT_BRANCH
-      exists:
+    - exists:
         - Dockerfile
