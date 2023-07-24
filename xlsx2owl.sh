@@ -18,7 +18,7 @@
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
 
-VERSION = "2.01"
+VERSION = "2.0"
 echo "xlsx2owl Version ${VERSION}"
 
 ###
