@@ -65,7 +65,8 @@ named parameters:
 
 ## History
 
-* Version 1.1 (2023-07-21)
+* Version 2.0 (2023-07-24)
+  * rename script from xlsx2owl-StahlDigital.sh to xlsx2owl.sh
   * updated to RML-Mapper 6.2.1, SeMiFuLi 0.2, java 17
   * updated Dockerfile to debian 11, java 17, nodejs 20.
   * added resources/prefixes.csv to Dockerfile
