@@ -17,9 +17,9 @@ dockerimage-build:
     - sed -i '/short-name-mode=.*/c\short-name-mode="disabled"' /etc/containers/registries.conf
     - tail /etc/containers/registries.conf
     # Log in to the GitLab container registry
+    - buildah info
     - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
     - echo "login to docker registry successfull"
-    - buildah info
     - buildah images
     - buildah build -t $IMAGE_NAME_FQ
     - buildah images
