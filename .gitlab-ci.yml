@@ -18,6 +18,7 @@ dockerimage-build:
     - tail /etc/containers/registries.conf
     # Log in to the GitLab container registry
     - echo "$CI_REGISTRY_PASSWORD" | buildah login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - echo "login to docker registry successfull"
     - buildah info
     - buildah images
     - buildah build -t $IMAGE_NAME_FQ
