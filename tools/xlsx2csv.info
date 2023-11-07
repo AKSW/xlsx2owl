@@ -1,1 +1,0 @@
-xlsx2csv.py: added fix for empty cell issue https://github.com/dilshod/xlsx2csv/issues/228

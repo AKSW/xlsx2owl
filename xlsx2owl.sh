@@ -18,7 +18,7 @@
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
 
-VERSION = "2.0"
+VERSION="2.0"
 echo "xlsx2owl Version ${VERSION}"
 
 ###
@@ -264,4 +264,4 @@ runMapper nquads nq
 # output statistics (triples=lines in nquad serialization
 ###
 echo -n "triples( == nquad lines) generated:"
-wc --lines "${optOutputFilenamePrefix}.nq"
+wc -l "${optOutputFilenamePrefix}.nq"

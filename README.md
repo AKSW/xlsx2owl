@@ -64,7 +64,11 @@ named parameters:
 
 
 ## History
-
+* unreleased:
+  * updated to RML-Mapper 6.2.2, xlsx2csv 0.8.1+(from 11/2023)
+  * updated Dockerfile to java 21(from eclipse temurin), nodejs 21, yarrrml@v1.6.1
+  * switched Dockerfile to node:21-alpine for reduced dockerfile and faster build
+  * minor fixes in xlsx2owl.sh
 * Version 2.0 (2023-07-24)
   * rename script from xlsx2owl-StahlDigital.sh to xlsx2owl.sh
   * updated to RML-Mapper 6.2.1, SeMiFuLi 0.2, java 17
