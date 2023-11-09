@@ -49,16 +49,24 @@ mappings:
   classes:
     sources:
       - ['csv/Classes.csv~csv']
-    ## **TODO:** test expandPrefix function
-    ## **TODO:** add filter to create only classes in our own namespace
+    ## **TODO:** add filter for only limited character list as subject
     ## **TODO:** we probably want to change 'spo' prefix to something like 'target' or use base prefix
     subject: "spo:$(id)"
     ### we need some handling for ids with other prefixes, but get NullPointer exception here
-    # condition:
-    #   function: "grel:string_contains"
-    #   parameters:
-    #     - [grel:valueParameter, "$(id)"]
-    #     - [grel:string_sub, "\:"]
+    condition:
+      # function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#boolean_not"
+      # parameters:
+      #   - parameter: "grel:param_b"
+      #     value: 
+      #       function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#boolean_not"
+      #       parameters:
+      #         - parameter: "grel:param_b"
+      #           value: 
+                  #function: "grel:string_contains"
+      function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#notContains"
+      parameters:
+        - [grel:valueParameter, "$(id)"]
+        - [grel:string_sub, "\:"]
     po:
       ## simple direct mappings:
       - ["a", "owl:Class"]
@@ -108,6 +116,11 @@ mappings:
     sources:
       - ['csv/Relations.csv~csv']
     subject: "spo:$(id)"
+    condition:
+      function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#notContains"
+      parameters:
+        - [grel:valueParameter, "$(id)"]
+        - [grel:string_sub, "\:"]
     po:
       - ["a", "owl:ObjectProperty"]
 
@@ -142,6 +155,11 @@ mappings:
     sources:
       - ['csv/Attributes.csv~csv']
     subject: "spo:$(id)"
+    condition:
+      function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#notContains"
+      parameters:
+        - [grel:valueParameter, "$(id)"]
+        - [grel:string_sub, "\:"]
     po:
       - ["a", "owl:DatatypeProperty"]
 

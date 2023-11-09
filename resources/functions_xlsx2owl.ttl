@@ -6,6 +6,7 @@
 @prefix fnom:    <https://w3id.org/function/vocabulary/mapping#> .
 @prefix foaf:    <http://xmlns.com/foaf/0.1/> .
 @prefix grel:    <http://users.ugent.be/~bjdmeest/function/grel.ttl#> .
+@prefix grelm:   <http://fno.io/grel/rmlmapping#> .
 @prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix void:    <http://rdfs.org/ns/void#> .
@@ -16,6 +17,13 @@
 # Parameter #
 #############
 
+sfunc:param_long_i
+    a             fno:Parameter ;
+    fno:name      "d1" ;
+    rdfs:label    "d1" ;
+    fno:predicate sfunc:p_long_i ;
+    fno:type      xsd:long ;
+    fno:required  "true"^^xsd:boolean .
 sfunc:param_array
     a             fno:Parameter ;
     fno:name      "array" ;
@@ -25,12 +33,9 @@ sfunc:param_array
     fno:required  "true"^^xsd:boolean 
     .
 
-#############
-# Functions #
-#############
-
-# utils from InfAI
-
+######################
+# Implementation Def #
+######################
 sfunc:functionsImpl
     a                  fnoi:JavaClass ;
     doap:download-page "resources/xlsx2owl-utils.jar" ;
@@ -39,7 +44,12 @@ sfunc:functionsImpl
     fnoi:class-name    "org.w3id.steel.xlsx2owl.utils.MappingUtils" ;
     .
 
-# SPLIT from InfAI
+
+#############
+# Functions #
+#############
+
+# SPLIT
 
 sfunc:splitMapping
     a                    fno:Mapping ;
@@ -75,7 +85,59 @@ sfunc:splitAndTrimMapping
     fno:methodMapping    [ a                fnom:StringMethodMapping ;
                            fnom:method-name "splitAndTrim" ] .
 
-# ExpandPrefix from InfAI
+# other grel functions with null input handling
+
+sfunc:contains
+    a                   fno:Function ;
+    fno:name            "contains" ;
+    dcterms:description "Returns a boolean indicating whether s contains sub." ;
+    fno:solves          grel:prob_contains ;
+    fno:expects         ( grel:valueParam grel:param_string_sub ) ;
+    fno:returns         ( grel:output_bool ) .
+sfunc:containsMapping
+    a                    fno:Mapping ;
+    fno:function         sfunc:contains ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "contains" ] .
+
+sfunc:notContains
+    a                   fno:Function ;
+    fno:name            "notContains" ;
+    dcterms:description "Returns a boolean indicating whether s not contains sub." ;
+    fno:expects         ( grel:valueParam grel:param_string_sub ) ;
+    fno:returns         ( grel:output_bool ) .
+    
+sfunc:notContainsMapping
+    a                    fno:Mapping ;
+    fno:function         sfunc:notContains ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a                fnom:StringMethodMapping ;
+                           fnom:method-name "notContains" ] .
+
+# sfunc:boolean_not
+#     a                   fno:Function ;
+#     fno:name            "not" ;
+#     dcterms:description "boolean negation" ;
+#     fno:solves          grel:prob_not ;
+#     fno:expects         ( grel:param_b ) ;
+#     fno:returns         ( grel:output_bool ) .
+
+# sfunc:notMapping
+#     a                    fno:Mapping ;
+#     fno:function         sfunc:boolean_not ;
+#     fno:implementation   sfunc:functionsImpl ;
+#     fno:parameterMapping [ ] ;
+#     fno:returnMapping    [ ] ;
+#     fno:methodMapping    [ a                fnom:StringMethodMapping ;
+#                            fnom:method-name "not" ] .
+
+
+# ExpandPrefix
 
 sfunc:expandPrefix
     a                   fno:Function ;
@@ -84,25 +146,6 @@ sfunc:expandPrefix
     fno:expects         ( grel:valueParam ) ;
     fno:returns         ( grel:valueParam ) ;
     .
-    
-sfunc:expandPrefixes
-    a                   fno:Function ;
-    fno:name            "expandPrefixes" ;
-    dcterms:description "expand prefixes of the given Iri List if present" ;
-    fno:expects         ( sfunc:param_array ) ;
-    fno:returns         ( grel:output_array ) ;
-    .
-sfunc:splitAndExpandPrefixes
-    a                   fno:Function ;
-    fno:name            "splitAndExpandPrefixes" ;
-    dcterms:description "Splits the given iris by separator 'sep' and expands prefixes (if known) in the resulting list of iris" ;
-    fno:expects         ( grel:valueParam grel:param_string_sep) ;
-    fno:returns         ( grel:output_array ) ;
-    .
-
-#####################
-# Function Mappings #
-#####################
 sfunc:expandPrefixMapping
     a                    fno:Mapping ;
     fno:function         sfunc:expandPrefix ;
@@ -110,8 +153,15 @@ sfunc:expandPrefixMapping
     fno:parameterMapping [ ] ;
     fno:returnMapping    [ ] ;
     fno:methodMapping    [ a                fnom:StringMethodMapping ;
-                           fnom:method-name "expandIriPrefix" ] .
+                           fnom:method-name "expandIriPrefix" ] .                          
 
+sfunc:expandPrefixes
+    a                   fno:Function ;
+    fno:name            "expandPrefixes" ;
+    dcterms:description "expand prefixes of the given Iri List if present" ;
+    fno:expects         ( sfunc:param_array ) ;
+    fno:returns         ( grel:output_array ) ;
+    .
 sfunc:expandPrefixesMapping
     a                    fno:Mapping ;
     fno:function         sfunc:expandPrefixes ;
@@ -120,7 +170,14 @@ sfunc:expandPrefixesMapping
     fno:returnMapping    [ ] ;
     fno:methodMapping    [ a                fnom:StringMethodMapping ;
                            fnom:method-name "expandIriPrefixes" ] .
-                           
+
+sfunc:splitAndExpandPrefixes
+    a                   fno:Function ;
+    fno:name            "splitAndExpandPrefixes" ;
+    dcterms:description "Splits the given iris by separator 'sep' and expands prefixes (if known) in the resulting list of iris" ;
+    fno:expects         ( grel:valueParam grel:param_string_sep) ;
+    fno:returns         ( grel:output_array ) ;
+    .
 sfunc:splitAndExpandPrefixesMapping
     a                    fno:Mapping ;
     fno:function         sfunc:splitAndExpandPrefixes ;
@@ -129,4 +186,24 @@ sfunc:splitAndExpandPrefixesMapping
     fno:returnMapping    [ ] ;
     fno:methodMapping    [ a                fnom:StringMethodMapping ;
                            fnom:method-name "splitAndExpandIriPrefixes" ] .
+
+# Conversion helpers
+
+sfunc:epochToIso8601
+    a                   fno:Function ;
+    fno:name            "epochToIso8601" ;
+    dcterms:description "Convert a Unix epoch to ISO8601 format" ;
+    #fno:expects         ( grel:valueParam ) ; # integer
+    fno:expects         ( sfunc:param_long_i ) ;
+    #fno:returns         ( grel:valueParam ) . # String of type xsd:DateTime
+    fno:returns        grel:output_datetime .
+
+sfunc:epochToIso8601Mapping
+    a                    fno:Mapping ;
+    fno:function         sfunc:epochToIso8601 ;
+    fno:implementation   sfunc:functionsImpl ;
+    fno:parameterMapping [ ] ;
+    fno:returnMapping    [ ] ;
+    fno:methodMapping    [ a fnom:StringMethodMapping ;
+                           fnom:method-name "epochToIso8601" ] .
                            
