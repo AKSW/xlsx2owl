@@ -64,7 +64,7 @@ named parameters:
 
 
 ## History
-* unreleased:
+* Version 2.1 (2023-11-09):
   * fixed unintended rendering of (foreign) prefixed subjects of classes, relations or attributes
   * updated to SeMiFuLi 0.2.1(adds 'contains' function), RML-Mapper 6.2.2, xlsx2csv 0.8.1+(from 11/2023)
   * updated Dockerfile to java 21(from eclipse temurin), nodejs 21, yarrrml@v1.6.1
