@@ -18,7 +18,7 @@
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
 
-VERSION="2.0"
+VERSION="2.1"
 echo "xlsx2owl Version ${VERSION}"
 
 ###
@@ -240,6 +240,7 @@ runMapper() {
     paramType="${1}"
     paramSuffix="${2}"
     targetFilename="${optOutputFilenamePrefix}.${paramSuffix}"
+    metadataFilename="${optOutputFilenamePrefix}.meta.${paramSuffix}"
     
     debugParameter=""
     if [[ "${optDebug}" = true ]]
@@ -247,7 +248,7 @@ runMapper() {
         debugParameter="--verbose"
     fi
     echo -n "  ${paramType}..."
-    IRI_PREFIX_MAP_FILE="${optCsvFolder}/prefixes.csv" java -jar "-DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv" "${optToolFolder}/rmlmapper.jar" --mappingfile "${optRmlFullFilepath}" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --functionfile "${optResourcesFolder}/functions_grel.ttl" --functionfile "${optResourcesFolder}/grel_java_mapping.ttl" --serialization "${paramType}" --outputfile "${targetFilename}" ${debugParameter}
+    IRI_PREFIX_MAP_FILE="${optCsvFolder}/prefixes.csv" java -jar "-DIRI_PREFIX_MAP_FILE=${optCsvFolder}/prefixes.csv" "${optToolFolder}/rmlmapper.jar" --mappingfile "${optRmlFullFilepath}" --duplicates --functionfile "${optResourcesFolder}/functions_xlsx2owl.ttl" --functionfile "${optResourcesFolder}/functions_grel.ttl" --functionfile "${optResourcesFolder}/grel_java_mapping.ttl" --serialization "${paramType}" --outputfile "${targetFilename}" --metadataDetailLevel dataset --metadatafile "${metadataFilename}" ${debugParameter}
     RC=$?
     if [[ "${optDebug}" = true ]]
     then
