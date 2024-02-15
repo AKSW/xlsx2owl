@@ -1,6 +1,7 @@
 @prefix : <https://w3id.org/steel/ProcessOntology/> .
 @prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix emmo: <http://emmo.info/emmo#> .
 @prefix fnml: <http://semweb.mmlab.be/ns/fnml#> .
 @prefix fno: <https://w3id.org/function/ontology#> .
@@ -19,10 +20,14 @@
 
 <https://w3id.org/steel/ProcessOntology> a owl:Ontology;
   dc:description "Ontology description EN"@en;
+  dcterms:contributor "Author 1", "Author 2";
+  dcterms:created "2023-06-01";
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/>;
+  dcterms:rights "CC-BY xlsx2owl";
   rdfs:label "CI Mock FIle"@en;
   owl:versionInfo "Test Input Version 1"@en;
   skos:prefLabel "CI Mock FIle"@en;
-  foaf:depiction :graph.png .
+  foaf:depiction "https://w3id.org/steel/ProcessOntology/graph.png" .
 
 :ConceptA a owl:Class;
   rdfs:comment "ConceptA Description EN"@en;
