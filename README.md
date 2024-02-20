@@ -36,6 +36,13 @@ named parameters:
             path <FILE> to the input spreadsheet file to use
             or where to store spreadfile downloaded.
             default 'xlsx2owl-tmp.xlsx'
+  --noPreprocess :
+            skip csv preprocessing.
+            Otherwise we add row number, file, sheet, current date and xlsx2owl version
+            as metadata columns to CSV files.
+  --test <FILE>:
+            enable test mode, use <FILE> as expected result ttl file to diff against.
+            In test mode the current time value is fixed to '2024-01-01T00:00:00+00:00'.
 ```
 
 ### run as docker container
@@ -64,6 +71,11 @@ named parameters:
 
 
 ## History
+
+* Version 2.2.0 (2024-02-20):
+  * added additional metadata
+  * added static csv columns (row number, sheetname, date, ...) as additional mapping input (disable with parameter --noPreprocess)
+  * added option --test to automate basic testing by comparing computed result to expected result
 * Version 2.1.1 (2023-11-09):
   * fixed unintended rendering of (foreign) prefixed subjects of classes, relations or attributes
   * fixed Dockerfile bash install

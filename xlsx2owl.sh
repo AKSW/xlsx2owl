@@ -99,7 +99,9 @@ named parameters:
             or where to store spreadfile downloaded.
             default 'xlsx2owl-tmp.xlsx'
   --noPreprocess :
-            skip csv preprocessing (add e.g. file sheet and current date as metadata columns)
+            skip csv preprocessing.
+            Otherwise we add row number, file, sheet, current date and xlsx2owl version
+            as metadata columns to CSV files.
   --test <FILE>:
             enable test mode, use <FILE> as expected result ttl file to diff against.
             In test mode the current time value is fixed to '2024-01-01T00:00:00+00:00'.
