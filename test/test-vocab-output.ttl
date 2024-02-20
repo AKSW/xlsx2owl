@@ -22,6 +22,7 @@
   dc:description "Ontology description EN"@en;
   dcterms:contributor "Author 1", "Author 2";
   dcterms:created "2023-06-01";
+  dcterms:date "2024-01-01T00:00:00+00:00";
   dcterms:license <https://creativecommons.org/licenses/by/4.0/>;
   dcterms:rights "CC-BY xlsx2owl";
   rdfs:label "CI Mock FIle"@en;

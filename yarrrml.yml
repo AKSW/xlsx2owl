@@ -44,6 +44,7 @@ mappings:
       - ["dcterms:created", "$(created)"]
       - ["dcterms:license", "$(license)~iri"]
       - ["dcterms:rights", "$(copyright)"]
+      - ["dcterms:date", "$(xlsx2owl_datetime)"]
       - p: "foaf:depiction"
         o:
           function: "http://w3id.org/steel/xlsx2owl-utils/functions.ttl#expandPrefix"

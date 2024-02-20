@@ -18,7 +18,7 @@
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
 
-VERSION="2.1"
+VERSION="2.2"
 echo "xlsx2owl Version ${VERSION}"
 
 ###
@@ -58,7 +58,14 @@ optCsvFolder="${optWorkFolder}csv"
 optOutputFilenamePrefix="rdf-out"
 # url for downloading spreadsheet
 unset optDownloadUrl
+# current datetime string
+optDateTime="$(date -u -Iseconds)"
+# debug mode
 optDebug=false
+# disable preprocessing mode
+optPreprocess=true
+# enable test mode
+optTest=false
 
 
 ###
@@ -91,11 +98,16 @@ named parameters:
             path <FILE> to the input spreadsheet file to use
             or where to store spreadfile downloaded.
             default 'xlsx2owl-tmp.xlsx'
+  --noPreprocess :
+            skip csv preprocessing (add e.g. file sheet and current date as metadata columns)
+  --test <FILE>:
+            enable test mode, use <FILE> as expected result ttl file to diff against.
+            In test mode the current time value is fixed to '2024-01-01T00:00:00+00:00'.
 EOF
 }
 
 # added '+' at short option string to enable the positional parameter
-LONGOPTS=help,debug,yarrrml:,outputPrefix:,input:
+LONGOPTS=help,debug,yarrrml:,outputPrefix:,input:,noPreprocess,test:
 OPTIONS=+hdy:o:i:
 
 ###
@@ -144,6 +156,16 @@ while true; do
             ;;
         -i|--input)
             optXlsxFilename="$2"
+            shift 2
+            ;;
+        --noPreprocess)
+            optPreprocess=false
+            shift
+            ;;
+        --test)
+            optTest="$2"
+            optDateTime="2024-01-01T00:00:00+00:00"
+            echo "test mode enabled, fixed current time value to ${optDateTime}"
             shift 2
             ;;
         --)
@@ -211,6 +233,9 @@ then
 ## download file
     echo "downloading spreadsheet from '${1}'"
     curl -L --cookie cookie "${1}" --output "${optXlsxFilename}"
+    inputFileName="$(basename ${1} | cut -d'?' -f1)"
+else
+    inputFileName="${optXlsxFilename}"
 fi
 
 ###
@@ -218,6 +243,14 @@ fi
 ###
 echo "converting xlsx to csv"
 python3 "${optToolFolder}/xlsx2csv.py" --all "${optXlsxFilename}" "${optCsvFolder}"
+if [[ "${optPreprocess}" = true ]]
+then
+    for file in "${optCsvFolder}"/*.csv; do
+        echo "preprocessing $file ..."
+        sheetName="$(basename "${file}" .csv)"
+        python3 "${optToolFolder}/csvColumnAdder.py" --rowNumberHeader "xlsx2owl_rowNumber" "$file" "xlsx2owl_filename" "${inputFileName}" "xlsx2owl_sheetname" "${sheetName}" "xlsx2owl_datetime" "${optDateTime}" "xlsx2owl_version" "${VERSION}"
+    done
+fi
 
 
 ###
@@ -266,3 +299,17 @@ runMapper nquads nq
 ###
 echo -n "triples( == nquad lines) generated:"
 wc -l "${optOutputFilenamePrefix}.nq"
+
+if [[ "${optTest}" != false ]]
+then
+    echo "diffing against test file"
+    EXIT_CODE=0
+    diff "${optTest}" "${optOutputFilenamePrefix}.ttl" || EXIT_CODE=$?
+    if [[ $EXIT_CODE -eq 0 ]]
+    then
+        echo "diff test passed"
+    else
+        echo "diff test failed" >> /dev/stderr
+        exit 1
+    fi  
+fi
