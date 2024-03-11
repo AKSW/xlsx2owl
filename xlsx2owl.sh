@@ -18,7 +18,7 @@
 # * yarrrml-parser at ~/node_modules/@rmlio/yarrrml-parser (e.g. via `npm i -g @rmlio/yarrrml-parser`)
 ###
 
-VERSION="2.2"
+VERSION="2.2.1"
 echo "xlsx2owl Version ${VERSION}"
 
 ###
@@ -96,12 +96,13 @@ named parameters:
             default 'rdf-out', relativ to the current working directory.
   -i, --input <FILE> :
             path <FILE> to the input spreadsheet file to use
-            or where to store spreadfile downloaded.
+            or where to store spreadfile if download url is given.
             default 'xlsx2owl-tmp.xlsx'
   --noPreprocess :
             skip csv preprocessing.
-            Otherwise we add row number, file, sheet, current date and xlsx2owl version
-            as metadata columns to CSV files.
+            Otherwise additional metadata columns get added to CSV files:
+            "xlsx2owl_rowNumber", "xlsx2owl_filename", "xlsx2owl_sheetname",
+            "xlsx2owl_datetime", "xlsx2owl_version"
   --test <FILE>:
             enable test mode, use <FILE> as expected result ttl file to diff against.
             In test mode the current time value is fixed to '2024-01-01T00:00:00+00:00'.
@@ -235,7 +236,7 @@ then
 ## download file
     echo "downloading spreadsheet from '${1}'"
     curl -L --cookie cookie "${1}" --output "${optXlsxFilename}"
-    inputFileName="$(basename ${1} | cut -d'?' -f1)"
+    inputFileName="${optXlsxFilename:-$(basename ${1} | cut -d'?' -f1)}"
 else
     inputFileName="${optXlsxFilename}"
 fi

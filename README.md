@@ -34,12 +34,12 @@ named parameters:
             default 'rdf-out', relativ to the current working directory.
   -i, --input <FILE> :
             path <FILE> to the input spreadsheet file to use
-            or where to store spreadfile downloaded.
+            or where to store spreadfile if download url is given.
             default 'xlsx2owl-tmp.xlsx'
   --noPreprocess :
             skip csv preprocessing.
-            Otherwise we add row number, file, sheet, current date and xlsx2owl version
-            as metadata columns to CSV files.
+            Otherwise additional metadata columns get added to CSV files:
+            "xlsx2owl_rowNumber", "xlsx2owl_filename", "xlsx2owl_sheetname", "xlsx2owl_datetime", "xlsx2owl_version"
   --test <FILE>:
             enable test mode, use <FILE> as expected result ttl file to diff against.
             In test mode the current time value is fixed to '2024-01-01T00:00:00+00:00'.
@@ -54,7 +54,12 @@ named parameters:
 
 ### run test
 
-* run docker image with test input e.g. via `$ podman run -it --rm -v "./test:/data/" xlsx2owl --debug -o /data/test-out 'file:///data/test-input.xlsx'`
+Run docker image with test input e.g. via `$ podman run -it --rm -v "./test:/data/" xlsx2owl --debug -o /data/test-out --test /data/test-vocab-output.ttl 'file:///data/test-input.xlsx'`. With the --test flag `diff` gets called at the end. Successfull output should end like the following:
+
+```
+diffing against test file
+diff test passed
+```
 
 
 ## Dependencies
@@ -72,6 +77,9 @@ named parameters:
 
 ## History
 
+* Version 2.2.1 (2024-03-11):
+  * fixed xlsx2owl_filename metadata column when url and --input parameter given
+  * minor updates in documentation
 * Version 2.2.0 (2024-02-20):
   * added additional metadata
   * added static csv columns (row number, sheetname, date, ...) as additional mapping input (disable with parameter --noPreprocess)
